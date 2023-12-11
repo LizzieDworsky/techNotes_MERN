@@ -23,11 +23,11 @@ const getAllUsers = asyncHandler(async (req, res) => {
 const createNewUser = asyncHandler(async (req, res) => {
     const { username, password, roles } = req.body;
     if (!username || !password || !Array.isArray(roles) || !roles.length) {
-        return res.status(400).json({ message: "All fields are required" });
+        return res.status(400).json({ message: "All fields are required." });
     }
     const duplicate = await User.findOne({ username }).lean().exec();
     if (duplicate) {
-        return res.status(409).json({ message: "Duplicate username" });
+        return res.status(409).json({ message: "Duplicate username." });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const userObject = { username, password: hashedPassword, roles };
@@ -45,7 +45,34 @@ const createNewUser = asyncHandler(async (req, res) => {
 @route PATCH /users
 @access Private
 */
-const updateUser = asyncHandler(async (req, res) => {});
+const updateUser = asyncHandler(async (req, res) => {
+    const { id, username, roles, active, password } = req.body;
+    if (
+        !id ||
+        !username ||
+        !Array.isArray(roles) ||
+        !roles.length ||
+        typeof active !== "boolean"
+    ) {
+        return res.status(400).json({ message: "All fields are required." });
+    }
+    const user = await User.findById(id).exec();
+    if (!user) {
+        return res.status(400).json({ message: "User not found." });
+    }
+    const duplicate = await User.findOne({ username }).lean().exec();
+    if (duplicate && duplicate?._id.toString() !== id) {
+        return res.status(409).json({ message: "Duplicate username." });
+    }
+    user.username = username;
+    user.roles = roles;
+    user.active = active;
+    if (password) {
+        user.password = await bcrypt.hash(password, 10);
+    }
+    const updatedUser = await user.save();
+    return res.json({ message: `${updateUser.username} updated.` });
+});
 /*
 @desc Delete user
 @route DELETE /users
