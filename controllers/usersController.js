@@ -10,7 +10,7 @@ const bcrypt = require("bcrypt");
 */
 const getAllUsers = asyncHandler(async (req, res) => {
     const users = await User.find().select("-password").lean();
-    if (!users) {
+    if (!users?.length) {
         return res.status(400).json({ message: "No users found." });
     }
     return res.json(users);
@@ -71,7 +71,7 @@ const updateUser = asyncHandler(async (req, res) => {
         user.password = await bcrypt.hash(password, 10);
     }
     const updatedUser = await user.save();
-    return res.json({ message: `${updateUser.username} updated.` });
+    return res.json({ message: `${updatedUser.username} updated.` });
 });
 /*
 @desc Delete user
@@ -83,15 +83,15 @@ const deleteUser = asyncHandler(async (req, res) => {
     if (!id) {
         return res.status(400).json({ message: "User ID Required." });
     }
-    const notes = await Note.findOne({ user: id }).lean().exec();
-    if (notes?.length) {
+    const note = await Note.findOne({ user: id }).lean().exec();
+    if (note) {
         return res.status(400).json({ message: "User has assigned notes." });
     }
     const user = await User.findById(id).exec();
     if (!user) {
         return res.status(400).json({ message: "User not found." });
     }
-    const result = await user.deleteOne();
+    const result = await User.findOneAndDelete({ _id: id }).exec();
     const reply = `Username ${result.username} with ID ${result._id} deleted.`;
     return res.json(reply);
 });
