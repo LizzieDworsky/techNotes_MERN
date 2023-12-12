@@ -1,12 +1,19 @@
+/**
+ * @file notesController.js
+ * Controller functions for handling note-related operations in the application.
+ * Includes functions for getting all notes, creating a new note, updating a note, and deleting a note.
+ */
+
 const Note = require("../models/Note");
 const User = require("../models/User");
 const asyncHandler = require("express-async-handler");
 
-/*
-@desc Get all notes
-@route GET /notes
-@access Private
-*/
+/**
+ * @desc Get all notes
+ * Retrieves all notes from the database.
+ * @route GET /notes
+ * @access Private
+ */
 const getAllNotes = asyncHandler(async (req, res) => {
     const notes = await Note.find().lean();
     if (!notes?.length) {
@@ -15,11 +22,13 @@ const getAllNotes = asyncHandler(async (req, res) => {
     return res.json(notes);
 });
 
-/*
-@desc Create new note
-@route POST /notes
-@access Private
-*/
+/**
+ * @desc Create new note
+ * Creates a new note with the provided user, title, text, and automatically generated ticket number.
+ * Validates the existence of the user before creating the note.
+ * @route POST /notes
+ * @access Private
+ */
 const createNewNote = asyncHandler(async (req, res) => {
     const { user, title, text } = req.body;
     if (!user || !title || !text) {
@@ -44,11 +53,13 @@ const createNewNote = asyncHandler(async (req, res) => {
     }
 });
 
-/*
-@desc Update note
-@route PATCH /notes
-@access Private
-*/
+/**
+ * @desc Update note
+ * Updates the specified fields of an existing note based on provided data.
+ * Validates the existence of the note and the user (if updated) before making changes.
+ * @route PATCH /notes
+ * @access Private
+ */
 const updateNote = asyncHandler(async (req, res) => {
     const { id, user, title, text, completed } = req.body;
     if (!id) {
@@ -77,6 +88,13 @@ const updateNote = asyncHandler(async (req, res) => {
     return res.json(resultObj);
 });
 
+/**
+ * Helper function to update individual fields of a note.
+ * @param {Note} note - The note document to be updated.
+ * @param {Object} resultObj - Object to accumulate the changes for response.
+ * @param {string} fieldName - The name of the field to update.
+ * @param {*} fieldValue - The new value for the field.
+ */
 const updateField = asyncHandler(
     async (note, resultObj, fieldName, fieldValue) => {
         if (typeof fieldValue !== "undefined" && fieldValue !== null) {
@@ -86,11 +104,13 @@ const updateField = asyncHandler(
     }
 );
 
-/*
-@desc Delete note
-@route DELETE /note
-@access Private
-*/
+/**
+ * @desc Delete note
+ * Deletes a note based on the provided ID.
+ * Validates the existence of the note before deletion.
+ * @route DELETE /notes
+ * @access Private
+ */
 const deleteNote = asyncHandler(async (req, res) => {
     const { id } = req.body;
     if (!id) {
