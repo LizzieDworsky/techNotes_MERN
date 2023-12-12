@@ -1,5 +1,14 @@
+/**
+ * @file Note.js
+ * Defines the schema for the Note model using Mongoose.
+ * Represents a note in the system with various attributes.
+ */
+
 const mongoose = require("mongoose");
 
+/**
+ * Schema definition for a note.
+ */
 const noteSchema = new mongoose.Schema(
     {
         ticket: {
@@ -24,8 +33,11 @@ const noteSchema = new mongoose.Schema(
         },
     },
     {
-        timestamps: true,
+        timestamps: true, // Automatically adds createdAt and updatedAt fields
     }
 );
 
+/**
+ * Exports the Note model, which is based on the noteSchema.
+ */
 module.exports = mongoose.model("Note", noteSchema);
