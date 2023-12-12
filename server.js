@@ -9,6 +9,7 @@ const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
 const connectDB = require("./config/dbConn");
 const mongoose = require("mongoose");
+const initializeCounter = require("./config/initDB");
 const PORT = process.env.PORT || 3500;
 
 connectDB();
@@ -31,8 +32,14 @@ app.all("*", (req, res) => {
     }
 });
 app.use(errorHandler);
-mongoose.connection.once("open", () => {
+mongoose.connection.once("open", async () => {
     console.log("Connected to MongoDB");
+    try {
+        await initializeCounter();
+        console.log("Counter initialized.");
+    } catch (error) {
+        console.log("Error initializing counter", error);
+    }
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
 mongoose.connection.on("error", (err) => {
