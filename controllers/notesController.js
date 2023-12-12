@@ -44,7 +44,42 @@ const createNewNote = asyncHandler(async (req, res) => {
 @route PATCH /notes
 @access Private
 */
-const updateNote = asyncHandler(async (req, res) => {});
+const updateNote = asyncHandler(async (req, res) => {
+    const { id, user, title, text, completed } = req.body;
+    if (!id) {
+        return res.status(400).json({ message: "ID is required." });
+    }
+    if (!user && !title && !text && typeof completed !== "boolean") {
+        return res.status(400).json({ message: "No fields to update." });
+    }
+    const note = await Note.findById(id).exec();
+    if (!note) {
+        return res.status(400).json({ message: "Note not found." });
+    }
+    let resultObj = { message: "Fields updated." };
+    if (user) {
+        const userObj = await User.findById(user).lean().exec();
+        if (!userObj) {
+            return res.status(400).json({ message: "User not found." });
+        }
+        note.user = user;
+        resultObj.username = userObj.username;
+    }
+    updateField(note, resultObj, "title", title);
+    updateField(note, resultObj, "text", text);
+    updateField(note, resultObj, "completed", completed);
+    await note.save();
+    return res.json(resultObj);
+});
+
+const updateField = asyncHandler(
+    async (note, resultObj, fieldName, fieldValue) => {
+        if (typeof fieldValue !== "undefined" && fieldValue !== null) {
+            note[fieldName] = fieldValue;
+            resultObj[fieldName] = fieldValue;
+        }
+    }
+);
 
 /*
 @desc Delete note
