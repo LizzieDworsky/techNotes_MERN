@@ -1,5 +1,14 @@
+/**
+ * @file corsOptions.js
+ * Configures CORS (Cross-Origin Resource Sharing) options for the application.
+ * Defines which origins are allowed to access the API.
+ */
+
 const allowedOrigins = require("./allowedOrigins");
 
+/**
+ * CORS options configuration.
+ */
 const corsOptions = {
     origin: (origin, callback) => {
         if (allowedOrigins.indexOf(origin) !== -1 || !origin) {

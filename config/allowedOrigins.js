@@ -1,5 +1,12 @@
+/**
+ * @file allowedOrigins.js
+ * Specifies the allowed origins for CORS.
+ * Lists the origins that are permitted to access the API.
+ */
+
 const allowedOrigins = [
     "http://localhost:3000",
-    // any additional urls ex: "http://www.amyrepair.io" and "https://www.amyrepair.io"
+    // any additional URLs e.g., "http://www.example.com"
 ];
+
 module.exports = allowedOrigins;
