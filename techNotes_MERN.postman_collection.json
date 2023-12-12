@@ -1,0 +1,152 @@
+{
+	"info": {
+		"_postman_id": "0986fe2b-e8ff-4646-814c-992a73c6e54f",
+		"name": "techNotes_MERN",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "21116298"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get_All_Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3500/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Create_User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Lizzie\",\r\n    \"password\": \"abc123\",\r\n    \"roles\": [\"Employee\"]\r\n}"
+						},
+						"url": "http://localhost:3500/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Update_User",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"6577334648b1ba6d2db3bd79\",\r\n    \"username\": \"Lizzie\",\r\n    \"password\": \"abc123\",\r\n    \"roles\": [\"Employee\"],\r\n    \"active\": true\r\n}"
+						},
+						"url": "http://localhost:3500/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete_User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"65773df7b6f80eb354b78e15\"\r\n}"
+						},
+						"url": "http://localhost:3500/users"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notes",
+			"item": [
+				{
+					"name": "Get_All_Notes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3500/notes"
+					},
+					"response": []
+				},
+				{
+					"name": "Create_Note",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": \"657759da61eb7106b6cc3b26\",\r\n    \"title\": \"iPhone Screen\",\r\n    \"text\": \"Need to replace iPhone screen\"\r\n}"
+						},
+						"url": "http://localhost:3500/notes"
+					},
+					"response": []
+				},
+				{
+					"name": "Update_Note",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"65777f798ac3c0c3ad469feb\",\r\n    \"user\": \"657759da61eb7106b6cc3b26\",\r\n    \"title\": \"Android Screen\",\r\n    \"text\": \"Need to replace Android screen\",\r\n    \"completed\": true\r\n}"
+						},
+						"url": "http://localhost:3500/notes"
+					},
+					"response": []
+				},
+				{
+					"name": "Update_Note Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"65777f798ac3c0c3ad469feb\"\r\n}"
+						},
+						"url": "http://localhost:3500/notes"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
