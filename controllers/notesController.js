@@ -86,6 +86,17 @@ const updateField = asyncHandler(
 @route DELETE /note
 @access Private
 */
-const deleteNote = asyncHandler(async (req, res) => {});
+const deleteNote = asyncHandler(async (req, res) => {
+    const { id } = req.body;
+    if (!id) {
+        return res.status(400).json({ message: "Note ID required." });
+    }
+    const note = await Note.findById(id).exec();
+    if (!note) {
+        return res.status(400).json({ message: "Note not found." });
+    }
+    const result = await Note.findOneAndDelete({ _id: id }).exec();
+    return res.json({ message: `Note ${result.title} was deleted.` });
+});
 
 module.exports = { getAllNotes, createNewNote, updateNote, deleteNote };
