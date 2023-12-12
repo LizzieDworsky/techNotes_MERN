@@ -29,7 +29,12 @@ const createNewNote = asyncHandler(async (req, res) => {
     if (!userObj) {
         return res.status(400).json({ message: "User not found." });
     }
-    const note = await Note.create({ user, title, text });
+    const note = await Note.create({
+        user,
+        title,
+        text,
+        ticket: req.ticketNumber,
+    });
     if (note) {
         return res
             .status(201)

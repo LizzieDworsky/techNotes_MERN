@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 
 const noteSchema = new mongoose.Schema(
     {
+        ticket: {
+            type: Number,
+        },
         user: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
